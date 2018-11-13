@@ -1,0 +1,14 @@
+- name: 执行解压以及安装
+  unarchive: src=/opt/elk/kafka_2.10-0.10.1.1.tgz    dest=/usr/local
+- name: 重命名
+  shell: mv /usr/local/kafka_2.10-0.10.1.1    /usr/local/kafka
+#- name: 创建配置文件
+  #shell: mkdir -p /usr/local/logstash/config/conf.d
+#- name: 上传logstash.service
+  #copy: 
+    #src: /opt/elk/logstash.service
+    #dest: /usr/lib/systemd/system/
+    #force: yes
+#- name: 写入system服务
+  #shell: systemctl daemon-reload 
+

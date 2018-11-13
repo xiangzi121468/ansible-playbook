@@ -1,0 +1,10 @@
+---
+- hosts : test
+  serial: 2
+  roles:
+    - jdk
+
+       
+
+
+  

@@ -1,0 +1,7 @@
+---
+- hosts : test
+  #vars :  
+      #touch_file : 111.txt
+  tasks:
+     - name : 修改文件权限
+       shell : " chmod  777 /root/*.txt "  

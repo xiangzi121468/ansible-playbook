@@ -1,0 +1,11 @@
+- name : 上传文件
+  synchronize:
+    src: /opt/elk/profile
+    dest: /opt/download/
+    delete: yes
+    recursive: yes
+- name: 执行解压以及安装
+  unarchive: src=/opt/elk/jdk-8u181-linux-x64.tar.gz    dest=/usr/local
+- name: 执行环境变量使其生效
+  shell: mv -f /opt/download/profile   /etc/profile && source /etc/profile && java -version
+
