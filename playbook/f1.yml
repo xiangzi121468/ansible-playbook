@@ -1,7 +1,0 @@
----
-- hosts : test
-  vars :  
-      touch_file : 111.txt 2222.txt
-  tasks:
-     - name : touch file
-       shell : "touch /root/{{touch_file}}"  
