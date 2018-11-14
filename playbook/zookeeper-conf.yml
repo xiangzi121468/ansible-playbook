@@ -1,0 +1,10 @@
+---
+- hosts : zookeeper
+  serial: 1
+  rolzookeeper:
+    - zookeeper-conf
+
+       
+
+
+  

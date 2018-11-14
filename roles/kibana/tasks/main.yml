@@ -1,0 +1,15 @@
+- name: 下载kibana解压并重命名
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/elk/kibana/kibana-6.2.4-linux-x86_64.tar.gz
+    tar zxvf kibana-6.2.4-linux-x86_64.tar.gz
+    mv kibana-6.2.4-linux-x86_64    /usr/local/kibana
+    rm -rf kibana-6.2.4-linux-x86_64.tar.gz
+- name: 下载kibana.service
+  shell: | 
+    cd /tmp/
+    wget http://10.30.0.50:8080/elk/kibana/kibana.service
+    mv -f kibana.service  /usr/lib/systemd/system/
+- name: 写入system服务
+  shell: systemctl daemon-reload 
+

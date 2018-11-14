@@ -1,0 +1,13 @@
+- name: 更新kafka配置
+  synchronize:
+    src: /opt/elk/kafka/
+    dest: /usr/local/kafka/config
+    delete: yes
+    recursive: yes
+
+
+- name: 重启kafka服务
+  systemd:
+    state: restarted
+    name: kafka
+

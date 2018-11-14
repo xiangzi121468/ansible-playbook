@@ -1,0 +1,10 @@
+---
+- hosts : logstash
+  serial: 1
+  rollogstash:
+    - logstash-conf
+
+       
+
+
+  

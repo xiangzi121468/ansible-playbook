@@ -1,0 +1,13 @@
+- name: 更新filebeat配置
+  synchronize:
+    src: /opt/elk/filebeat/
+    dest: /usr/local/filebeat/
+    delete: yes
+    recursive: yes
+
+
+- name: 重启filebeat服务
+  systemd:
+    state: restarted
+    name: filebeat
+

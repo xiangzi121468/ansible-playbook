@@ -1,0 +1,13 @@
+- name: 更新zookeeper配置
+  synchronize:
+    src: /opt/elk/zookeeper/
+    dest: /usr/local/zookeeper/conf
+    delete: yes
+    recursive: yes
+
+
+- name: 重启zookeeper服务
+  systemd:
+    state: restarted
+    name: zookeeper
+
