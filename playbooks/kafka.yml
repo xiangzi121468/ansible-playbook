@@ -1,0 +1,11 @@
+---
+- hosts : kafka
+  serial: 1
+  roles:
+    - jdk
+    - kafka
+
+       
+
+
+  

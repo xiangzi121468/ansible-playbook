@@ -1,0 +1,11 @@
+- name: 更新dns配置文件
+  copy:
+    src: "{{ item }}"
+    dest: /etc/dnsmasq.d/
+  with_items:
+    - ffhdev.com
+
+- name: 重启dnsmasq服务
+  systemd:
+    state: restarted
+    name: dnsmasq

@@ -6,10 +6,9 @@
      mv filebeat-6.2.4-linux-x86_64   /usr/local/filebeat
      rm -rf filebeat-6.2.4-linux-x86_64.tar.gz
 - name: 上传filebeat.service
-  shell: |
-     cd  /tmp/
-     wget http://10.30.0.50:8080/elk/filebeat/filebeat.service
-     mv  -f filebeat.service    /usr/lib/systemd/system/
+  copy:
+    src: filebeat.service
+    dest:   /usr/lib/systemd/system/filebeat.service
 - name: 写入system服务
   shell: systemctl daemon-reload 
 

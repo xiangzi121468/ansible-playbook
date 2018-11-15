@@ -9,10 +9,9 @@
     chown -R elasticsearch:elasticsearch /usr/local/elasticsearch
 
 - name: 下载elasticsearch.service
-  shell: |
-    cd /tmp/
-    wget http://10.30.0.50:8080/elk/es/elasticsearch.service
-    mv -f elasticsearch.service  /usr/lib/systemd/system/
+  copy:
+    src: elasticsearch.service
+    dest:  /usr/lib/systemd/system/elasticsearch.service
 - name: 写入system服务
   shell: systemctl daemon-reload 
 

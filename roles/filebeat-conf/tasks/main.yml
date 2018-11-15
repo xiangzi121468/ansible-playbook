@@ -1,9 +1,7 @@
 - name: 更新filebeat配置
-  synchronize:
-    src: /opt/elk/filebeat/
-    dest: /usr/local/filebeat/
-    delete: yes
-    recursive: yes
+templates:
+  src: filebeat.yml
+  dest: /usr/local/filebeat/filebeat.yml
 
 
 - name: 重启filebeat服务

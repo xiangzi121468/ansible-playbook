@@ -1,0 +1,40 @@
+- name: download package
+  shell: cd /tmp/;wget 10.30.0.50:8080/openresty-1.13.6.2.tar.gz&&tar -zxvf openresty-1.13.6.2.tar.gz
+
+- name: install lib
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - pcre-devel
+    - openssl-devel
+    - gcc
+    - curl
+
+- name: compile
+  shell: cd /tmp/openresty-1.13.6.2 && ./configure --prefix=/opt/openresty --with-luajit --without-http_redis2_module --with-http_iconv_module  && gmake && gmake install
+
+- name: create dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - /data/logs/nginx
+    - /opt/openresty/nginx/conf/conf.d
+
+- name: copy nginx conf
+  copy:
+    src: nginx.conf
+    dest: /opt/openresty/nginx/conf/nginx.conf
+
+- name: configure nginx service
+  copy:
+    src: nginx.service
+    dest: /usr/lib/systemd/system/nginx.service
+
+- name: start nginx
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes

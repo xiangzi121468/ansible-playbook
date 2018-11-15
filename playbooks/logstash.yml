@@ -1,0 +1,11 @@
+---
+- hosts : logstash
+  serial: 1
+  roles:
+    - jdk
+    - logstash
+
+       
+
+
+  

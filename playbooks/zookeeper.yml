@@ -1,0 +1,11 @@
+---
+- hosts : zookeeper
+  serial: 1
+  roles:
+    - jdk
+    - zookeeper
+
+       
+
+
+  

@@ -1,0 +1,12 @@
+[Unit]
+Description=kafka
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/kafka/bin/kafka-server-start.sh -daemon /usr/local/kafka/config/server.properties
+ExecStop=kill -9  ` ps -ef |grep kafka |grep -v grep|awk '{print $2}'  `
+#Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,9 +1,8 @@
 - name: 更新logstash配置
-  synchronize:
-    src: /opt/elk/logstash/
-    dest: /usr/local/logstash/config/conf.d
-    delete: yes
-    recursive: yes
+  templates:
+    src: logstash-demo.conf
+    dest: /usr/local/logstash/config/conf.d/logstash-demo.conf
+
 
 
 - name: 重启logstash服务

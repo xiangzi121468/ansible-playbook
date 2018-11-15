@@ -1,0 +1,12 @@
+[Unit]
+Description=filebeat
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/filebeat/filebeat  -c /usr/local/filebeat/filebeat.yml  
+ExecStop=kill -9  ` ps -ef |grep filebeat |grep -v grep|awk '{print $2}'  `
+#Restart=always
+
+[Install]
+WantedBy=multi-user.target

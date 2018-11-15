@@ -1,0 +1,58 @@
+- name: create logs dir
+  file:
+    path: /data/logs
+    state: directory
+
+- name: create user
+  user:
+    name: zabbix
+
+- name: create zabbix dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: zabbix
+    recurse: yes
+  with_items:
+    - /usr/local/zabbix/sbin
+    - /usr/local/zabbix/etc/zabbix_agentd.conf.d
+    - /data/logs/zabbix
+
+- name: copy binary file
+  copy:
+    src: zabbix_agentd
+    dest: /usr/local/zabbix/sbin/zabbix_agentd
+    mode: 755
+    owner: zabbix
+
+- name: copy service file
+  copy:
+    src: zabbix_agentd.service
+    mode: 755
+    dest: /etc/init.d/zabbix_agentd
+
+- name: gen conf
+  template:
+    src: zabbix_agentd.conf.j2
+    dest: /usr/local/zabbix/etc/zabbix_agentd.conf
+    owner: zabbix
+
+- name: start zabbix_agentd
+  shell: chkconfig zabbix_agentd on
+
+- name: gen hostname
+  template:
+    src: hostname.j2
+    dest: /etc/hostname
+
+#- name: reboot server
+#  shell: reboot
+#  ignore_errors: yes
+
+#- name: Wait for server to restart
+#  local_action:
+#    module: wait_for
+#      host={{hostvars[inventory_hostname].ansible_ssh_host}}
+#      port=50099
+#      delay=5
+#      timeout=300

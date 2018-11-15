@@ -1,0 +1,12 @@
+[Unit]
+Description=kibana
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/kibana/bin/kibana   
+ExecStop=kill -9  ` ps -ef |grep node |grep -v grep|awk '{print $2}'  `
+#Restart=always
+
+[Install]
+WantedBy=multi-user.target

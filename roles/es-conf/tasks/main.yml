@@ -1,9 +1,8 @@
 - name: 更新es配置
-  synchronize:
-    src: /opt/elk/es/
-    dest: /usr/local/elasticsearch/config
-    delete: yes
-    recursive: yes
+  templates:
+    src: elasticsearch.yml
+    dest: /usr/local/elasticsearch/config/elasticsearch.yml
+
 
 
 - name: 重启es服务

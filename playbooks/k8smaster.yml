@@ -1,0 +1,5 @@
+- hosts: k8smaster
+
+  serial: 3
+  roles:
+    - k8smaster

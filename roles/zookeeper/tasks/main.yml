@@ -6,10 +6,9 @@
     mv zookeeper-3.4.12    /usr/local/zookeeper
     rm -rf zookeeper-3.4.12.tar.gz
 - name: 下载zookeeper.service
-  shell: | 
-    cd /tmp/
-    wget http://10.30.0.50:8080/elk/zookeeper/zookeeper.service
-    mv -f zookeeper.service  /usr/lib/systemd/system/
+  copy:
+    src: zookeeper.service
+    dest:  /usr/lib/systemd/system/zookeeper.service
 - name: 写入system服务
   shell: systemctl daemon-reload 
 

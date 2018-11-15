@@ -1,0 +1,5 @@
+---
+masterhost: 10.30.0.100,10.30.0.101,10.30.0.102,10.30.0.107
+kubeapi: 10.30.0.107:6443
+###gen by head -c 32 /dev/urandom | base64
+ENCRYPTION_KEY: 0yHyGeHxAAh1ufYUe1LTTst6a+9gZvUf2tRepvs6yv8=

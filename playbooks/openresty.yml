@@ -1,0 +1,5 @@
+- hosts: nginx
+
+  serial: 2
+  roles:
+    - openresty

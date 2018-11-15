@@ -1,0 +1,16 @@
+{
+  "CN": "system:node:{{ hostvars[inventory_hostname].ansible_ssh_host }}",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "L": "Shanghai",
+      "O": "system:nodes",
+      "OU": "Fullerton",
+      "ST": "Shanghai"
+    }
+  ]
+}

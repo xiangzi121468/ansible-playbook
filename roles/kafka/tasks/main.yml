@@ -9,10 +9,9 @@
      mv -f profile  /etc/profile
      source  /etc/profile
 - name: 上传kafka.service
-  shell: |
-     cd /tmp/
-     wget   http://10.30.0.50:8080/elk/kafka/kafka.service
-     mv -f kafka.service   /usr/lib/systemd/system/
+  copy:
+     src: kafka.service
+     dest:   /usr/lib/systemd/system/kafka.service
     #force: yes
 - name: 写入system服务
   shell: systemctl daemon-reload

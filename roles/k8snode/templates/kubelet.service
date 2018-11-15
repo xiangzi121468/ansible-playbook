@@ -1,0 +1,22 @@
+[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/kubernetes/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/kubelet \
+  --allow-privileged=true \
+  --config=/etc/kubernetes/kubelet-config.yaml \
+  --image-pull-progress-deadline=2m \
+  --hostname-override={{ hostvars[inventory_hostname].ansible_ssh_host }} \
+  --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
+  --pod-infra-container-image=registry.access.redhat.com/rhel7/pod-infrastructure:latest \
+  --register-node=true \
+  --root-dir=/data/kubelet \
+  --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+- name: 同步配置
+  synchronize:
+    src: /etc/ansible/roles/reload-nginx/files/
+    dest: /opt/openresty/nginx/conf.d/
+    delete: yes
+    recursive: yes
+
+
+- name: 测试并重载配置
+  shell: nginx -t && nginx -s reload

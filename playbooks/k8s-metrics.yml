@@ -1,0 +1,5 @@
+- hosts: ansible
+
+  serial: 1
+  roles:
+    - k8s-metrics

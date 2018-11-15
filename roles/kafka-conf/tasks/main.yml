@@ -1,10 +1,7 @@
 - name: 更新kafka配置
-  synchronize:
-    src: /opt/elk/kafka/
-    dest: /usr/local/kafka/config
-    delete: yes
-    recursive: yes
-
+  templates:
+    src: server.properties
+    dest: /usr/local/kafka/config/server.properties
 
 - name: 重启kafka服务
   systemd:

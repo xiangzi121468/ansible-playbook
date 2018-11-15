@@ -1,0 +1,32 @@
+- name: setup lib
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - socat
+    - erlang
+
+- name: download package
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/rabbitmq-server-3.6.15-1.el7.noarch.rpm
+    wget http://10.30.0.50:8080/rabbitmq-release-signing-key.asc
+
+- name: setup rabbitmq
+  shell: |
+    cd /tmp/
+    rpm --import rabbitmq-release-signing-key.asc
+    rpm -ivh rabbitmq-server-3.6.15-1.el7.noarch.rpm
+
+- name: start service
+  systemd:
+    name: rabbitmq-server
+    state: started
+    enabled: yes
+
+- name: enable management
+  shell: rabbitmq-plugins enable rabbitmq_management
+
+
+
+
