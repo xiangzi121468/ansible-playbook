@@ -1,0 +1,53 @@
+- name: 安装程序
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/flanneld/flanneld
+    wget http://10.30.0.50:8080/flanneld/mk-docker-opts.sh
+    mv flanneld /usr/bin/flanneld
+    mv mk-docker-opts.sh /etc/kubernetes/
+    chmod +x /usr/bin/flanneld
+    chmod +x /etc/kubernetes/mk-docker-opts.sh
+
+- name: ansible 安装 etcdctl
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/etcd/etcdctl
+    mv etcdctl /usr/bin/etcdctl
+    chmod +x /usr/bin/etcdctl
+  connection: local
+
+- name: 创建网段
+  shell: |
+    etcdctl \
+      --endpoints=https://{{ ETCDIP }} \
+      --ca-file=/usr/local/ssl/ca.pem \
+      --cert-file=/usr/local/ssl/kubernetes.pem \
+      --key-file=/usr/local/ssl/kubernetes-key.pem \
+      set /kubernetes/network/config '{"Network":"{{ SUBLAN }}", "SubnetLen": 24, "Backend": {"Type": "vxlan"}}'
+  run_once: yes
+  connection: local
+
+- name: 配置服务
+  template:
+    src: flanneld.service
+    dest: /usr/lib/systemd/system/flanneld.service
+
+- name: 启动服务
+  systemd:
+    name: flanneld
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: 修改docker服务
+  copy:
+    src: docker.service
+    dest: /usr/lib/systemd/system/docker.service
+
+- name: 重启docker
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+

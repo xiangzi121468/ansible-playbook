@@ -1,0 +1,10 @@
+- name: 更新kafka配置
+  templates:
+    src: server.properties
+    dest: /usr/local/kafka/config/server.properties
+
+- name: 重启kafka服务
+  systemd:
+    state: restarted
+    name: kafka
+

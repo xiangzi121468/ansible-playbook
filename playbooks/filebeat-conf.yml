@@ -1,0 +1,10 @@
+---
+- hosts : filebeat
+  serial: 1
+  rolfilebeat:
+    - filebeat-conf
+
+       
+
+
+  

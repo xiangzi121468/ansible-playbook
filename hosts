@@ -1,0 +1,58 @@
+[ansible]
+ansible-pro    ansible_ssh_host=10.30.0.20 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[dns]
+dns1   ansible_ssh_host=10.30.0.21 ansible_ssh_port=50099 ansible_ssh_user=root
+dns2   ansible_ssh_host=10.30.0.22 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[zabbix]
+zabbix1   ansible_ssh_host=10.30.0.30 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[prometheus]
+prometheus1  ansible_ssh_host=10.30.0.31 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[k8s]
+k8s1  ansible_ssh_host=10.30.0.100 ansible_ssh_port=50099 ansible_ssh_user=root
+k8s2  ansible_ssh_host=10.30.0.101 ansible_ssh_port=50099 ansible_ssh_user=root
+k8s3  ansible_ssh_host=10.30.0.102 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[k8smaster]
+k8s1  ansible_ssh_host=10.30.0.100 ansible_ssh_port=50099 ansible_ssh_user=root
+k8s2  ansible_ssh_host=10.30.0.101 ansible_ssh_port=50099 ansible_ssh_user=root
+k8s3  ansible_ssh_host=10.30.0.102 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[k8snode]
+k8s1  ansible_ssh_host=10.30.0.100 ansible_ssh_port=50099 ansible_ssh_user=root
+k8s2  ansible_ssh_host=10.30.0.101 ansible_ssh_port=50099 ansible_ssh_user=root
+k8s3  ansible_ssh_host=10.30.0.102 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[redis]
+redis1  ansible_ssh_host=10.30.0.56 ansible_ssh_port=50099 ansible_ssh_user=root
+redis2  ansible_ssh_host=10.30.0.57 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[redismaster]
+redis1  ansible_ssh_host=10.30.0.56 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[redisslave]
+redis2  ansible_ssh_host=10.30.0.57 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[rabbitmq]
+rabbitmq1  ansible_ssh_host=10.30.0.53 ansible_ssh_port=50099 ansible_ssh_user=root
+rabbitmq2  ansible_ssh_host=10.30.0.54 ansible_ssh_port=50099 ansible_ssh_user=root
+rabbitmq3  ansible_ssh_host=10.30.0.55 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[jenkins]
+jenkins1  ansible_ssh_host=10.30.0.18 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[nginx]
+nginx1  ansible_ssh_host=10.30.0.90 ansible_ssh_port=50099 ansible_ssh_user=root
+nginx2  ansible_ssh_host=10.30.0.91 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[harbor]
+harbor1  ansible_ssh_host=10.30.0.50 ansible_ssh_port=50099 ansible_ssh_user=root
+harbor2  ansible_ssh_host=10.30.0.51 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[jumpserver]
+jumpserver1  ansible_ssh_host=10.30.0.23 ansible_ssh_port=50099 ansible_ssh_user=root
+
+[new]

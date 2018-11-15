@@ -1,12 +1,14 @@
-- name: 执行解压以及安装
-  unarchive: src=/opt/elk/filebeat-6.2.4-linux-x86_64.tar.gz    dest=/usr/local
-- name: 重命名
-  shell: mv /usr/local/filebeat-6.2.4-linux-x86_64   /usr/local/filebeat
+- name: 下载filebeat解压并重命名
+  shell: |
+     cd /tmp/
+     wget http://10.30.0.50:8080/elk/filebeat/filebeat-6.2.4-linux-x86_64.tar.gz
+     tar zxvf filebeat-6.2.4-linux-x86_64.tar.gz
+     mv filebeat-6.2.4-linux-x86_64   /usr/local/filebeat
+     rm -rf filebeat-6.2.4-linux-x86_64.tar.gz
 - name: 上传filebeat.service
-  copy: 
-    src: /opt/elk/filebeat.service
-    dest: /usr/lib/systemd/system/
-    #force: yes
+  copy:
+    src: filebeat.service
+    dest:   /usr/lib/systemd/system/filebeat.service
 - name: 写入system服务
   shell: systemctl daemon-reload 
 

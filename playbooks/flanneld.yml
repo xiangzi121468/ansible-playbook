@@ -1,0 +1,5 @@
+- hosts: k8snode
+
+  serial: 3
+  roles:
+    - flanneld

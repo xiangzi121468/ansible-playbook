@@ -1,0 +1,35 @@
+[Unit]
+Description=Etcd Server
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/coreos
+
+[Service]
+User=root
+Type=notify
+WorkingDirectory=/data/etcd/
+ExecStart=/usr/bin/etcd \
+  --data-dir=/data/etcd \
+  --name={{ hostvars[inventory_hostname].ansible_ssh_host }} \
+  --cert-file=/data/etcd/ssl/kubernetes.pem \
+  --key-file=/data/etcd/ssl/kubernetes-key.pem \
+  --trusted-ca-file=/data/etcd/ssl/ca.pem \
+  --peer-cert-file=/data/etcd/ssl/kubernetes.pem \
+  --peer-key-file=/data/etcd/ssl/kubernetes-key.pem \
+  --peer-trusted-ca-file=/data/etcd/ssl/ca.pem \
+  --peer-client-cert-auth \
+  --client-cert-auth \
+  --listen-peer-urls=https://{{ hostvars[inventory_hostname].ansible_ssh_host }}:2380 \
+  --initial-advertise-peer-urls=https://{{ hostvars[inventory_hostname].ansible_ssh_host }}:2380 \
+  --listen-client-urls=https://{{ hostvars[inventory_hostname].ansible_ssh_host }}:2379,http://127.0.0.1:2379 \
+  --advertise-client-urls=https://{{ hostvars[inventory_hostname].ansible_ssh_host }}:2379 \
+  --initial-cluster-token=etcd-cluster-0 \
+  --initial-cluster={{ initcluster }} \
+  --initial-cluster-state=new
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

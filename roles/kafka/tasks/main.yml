@@ -1,11 +1,17 @@
-- name: 执行解压以及安装
-  unarchive: src=/opt/elk/kafka/kafka_2.10-0.10.1.1.tgz    dest=/usr/local
-- name: 重命名
-  shell: mv /usr/local/kafka_2.10-0.10.1.1    /usr/local/kafka
+- name:  下载kafka解压并重命名
+  shell: |
+     cd  /tmp/
+     wget   http://10.30.0.50:8080/elk/kafka/kafka_2.10-0.10.1.1.tgz
+     tar zxvf kafka_2.10-0.10.1.1.tgz
+     mv kafka_2.10-0.10.1.1    /usr/local/kafka
+     rm -rf kafka_2.10-0.10.1.1.tgz
+     wget  http://10.30.0.50:8080/elk/kafka/profile
+     mv -f profile  /etc/profile
+     source  /etc/profile
 - name: 上传kafka.service
   copy:
-    src: /opt/elk/kafka/kafka.service
-    dest: /usr/lib/systemd/system/
+     src: kafka.service
+     dest:   /usr/lib/systemd/system/kafka.service
     #force: yes
 - name: 写入system服务
   shell: systemctl daemon-reload

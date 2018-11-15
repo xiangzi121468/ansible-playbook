@@ -1,0 +1,107 @@
+- name: 安装二进制文件
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/kubernetes/kubeadm
+    wget http://10.30.0.50:8080/kubernetes/kube-apiserver
+    wget http://10.30.0.50:8080/kubernetes/kube-controller-manager
+    wget http://10.30.0.50:8080/kubernetes/kubectl
+    wget http://10.30.0.50:8080/kubernetes/kube-scheduler
+    mv ./kube* /usr/bin/
+    chmod +x /usr/bin/kube*
+
+- name: 生成目录
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - /etc/kubernetes/pki
+    - /root/.kube
+    - /data/logs/kubernetes
+
+- name: 拷贝证书
+  copy:
+    src: "{{ item }}"
+    dest: /etc/kubernetes/pki/
+  with_items:
+    - /usr/local/ssl/ca-key.pem
+    - /usr/local/ssl/kube-controller-manager-key.pem
+    - /usr/local/ssl/kubernetes-key.pem
+    - /usr/local/ssl/kube-scheduler-key.pem
+    - /usr/local/ssl/service-account-key.pem
+    - /usr/local/ssl/ca.pem
+    - /usr/local/ssl/kube-controller-manager.pem
+    - /usr/local/ssl/kubernetes.pem
+    - /usr/local/ssl/kube-scheduler.pem
+    - /usr/local/ssl/service-account.pem
+
+
+- name: 安装配置文件
+  copy:
+    src: "{{ item }}"
+    dest: /etc/kubernetes/
+  with_items:
+    - /usr/local/kubefiles/kube-controller-manager.kubeconfig
+    - /usr/local/kubefiles/kube-scheduler.kubeconfig
+    - /usr/local/kubefiles/encryption-config.yaml
+
+- name: 安装ansible kubeconfig
+  shell: |
+    mkdir /root/.kube
+    cp /usr/local/kubefiles/admin.kubeconfig /root/.kube/config
+  connection: local
+
+- name: 安装kubeconfig
+  copy:
+    src: /usr/local/kubefiles/admin.kubeconfig
+    dest: /root/.kube/config
+
+###UCLOUD 需要操作
+- name: 配置ulb地址
+  template:
+    src: ifcfg-lo:1
+    dest: /etc/sysconfig/network-scripts/ifcfg-lo:1
+
+- name: 启动ulb接口
+  shell: ifup lo:1
+
+- name: 生成apiserver配置
+  template:
+    src: kube-apiserver.service
+    dest: /usr/lib/systemd/system/kube-apiserver.service
+
+- name: 启动apiserver
+  systemd:
+    name: kube-apiserver
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: 生成controller配置
+  copy:
+    src: kube-controller-manager.service
+    dest: /usr/lib/systemd/system/kube-controller-manager.service
+
+- name: 启动controller
+  systemd:
+    name: kube-controller-manager
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: 生成schduler配置
+  copy:
+    src: kube-scheduler.service
+    dest: /usr/lib/systemd/system/kube-scheduler.service
+
+- name: 启动scheduler
+  systemd:
+    name: kube-scheduler
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: 定义kubelet规则
+  shell: kubectl create clusterrolebinding kube-apiserver:kubelet-apis --clusterrole=system:kubelet-api-admin --user kubernetes
+  connection: local
+  run_once: true

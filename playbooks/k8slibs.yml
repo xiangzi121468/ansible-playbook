@@ -1,0 +1,5 @@
+- hosts: ansible
+
+  serial: 3
+  roles:
+    - k8slibs

@@ -1,0 +1,12 @@
+[Unit]
+Description=Redis
+
+[Service]
+User=root
+Type=forking
+ExecStart=/usr/local/bin/redis-server   /data/redis/conf/redis.conf
+ExecStop=/usr/local/bin/redis-cli shutdown
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

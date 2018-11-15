@@ -1,0 +1,12 @@
+- name: 更新logstash配置
+  templates:
+    src: logstash-demo.conf
+    dest: /usr/local/logstash/config/conf.d/logstash-demo.conf
+
+
+
+- name: 重启logstash服务
+  systemd:
+    state: restarted
+    name: logstash
+

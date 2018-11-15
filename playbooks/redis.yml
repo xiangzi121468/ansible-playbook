@@ -1,0 +1,5 @@
+- hosts: redisslave
+
+  serial: 2
+  roles:
+    - redis

@@ -1,0 +1,152 @@
+- name: 安装依赖包
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - socat
+    - conntrack
+    - ipset
+
+- name: 创建工作目录
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /data/kubelet
+    - /data/kube-proxy
+    - /etc/kubernetes/pki
+    - /etc/docker
+    - /data/docker
+
+- name: 生成客户端证书
+  template:
+    src: node-csr.json
+    dest: /usr/local/ssl/{{ hostvars[inventory_hostname].ansible_ssh_host }}-csr.json
+  connection: local
+
+- name: 生成证书
+  shell: |
+    cd /usr/local/ssl/
+    cfssl gencert \
+      -ca=ca.pem \
+      -ca-key=ca-key.pem \
+      -config=ca-config.json \
+      -hostname={{ hostvars[inventory_hostname].ansible_ssh_host }} \
+      -profile=kubernetes \
+      {{ hostvars[inventory_hostname].ansible_ssh_host }}-csr.json | cfssljson -bare {{ hostvars[inventory_hostname].ansible_ssh_host }}
+  connection: local
+
+- name: 生成客户端证书
+  template:
+    src: node-csr.json
+    dest: /usr/local/ssl/{{ hostvars[inventory_hostname].ansible_ssh_host }}-csr.json
+  connection: local
+
+- name: 生成kubelet.kubeconfig
+  shell: |
+    cd /usr/local/ssl/
+    kubectl config set-cluster kubernetes \
+      --certificate-authority=ca.pem \
+      --embed-certs=true \
+      --server=https://{{ MASTERIP }} \
+      --kubeconfig={{ hostvars[inventory_hostname].ansible_ssh_host }}.kubeconfig
+    kubectl config set-credentials system:node:{{ hostvars[inventory_hostname].ansible_ssh_host }} \
+      --client-certificate={{ hostvars[inventory_hostname].ansible_ssh_host }}.pem \
+      --client-key={{ hostvars[inventory_hostname].ansible_ssh_host }}-key.pem \
+      --embed-certs=true \
+      --kubeconfig={{ hostvars[inventory_hostname].ansible_ssh_host }}.kubeconfig
+    kubectl config set-context default \
+      --cluster=kubernetes \
+      --user=system:node:{{ hostvars[inventory_hostname].ansible_ssh_host }}\
+      --kubeconfig={{ hostvars[inventory_hostname].ansible_ssh_host }}.kubeconfig
+    kubectl config use-context default --kubeconfig={{ hostvars[inventory_hostname].ansible_ssh_host }}.kubeconfig
+  connection: local
+
+- name: 分发公钥证书
+  copy:
+    src: /usr/local/ssl/{{ hostvars[inventory_hostname].ansible_ssh_host }}.pem
+    dest: /etc/kubernetes/pki/kubelet.pem
+
+- name: 分发私钥证书
+  copy:
+    src: /usr/local/ssl/{{ hostvars[inventory_hostname].ansible_ssh_host }}-key.pem
+    dest: /etc/kubernetes/pki/kubelet-key.pem
+
+- name: 分发kubelet.config
+  copy:
+    src: /usr/local/ssl/{{ hostvars[inventory_hostname].ansible_ssh_host }}.kubeconfig
+    dest: /etc/kubernetes/kubelet.kubeconfig
+
+- name: 生成docker配置文件
+  template:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+
+- name: 安装kubelet & kube-proxy
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/kubernetes/kubelet
+    wget http://10.30.0.50:8080/kubernetes/kube-proxy
+    mv ./kube* /usr/bin/
+    chmod +x /usr/bin/kube*
+
+- name: 生成docker服务
+  copy:
+    src: docker.service
+    dest: /usr/lib/systemd/system/docker.service
+
+- name: 启动docker服务
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: 生成kubelet配置
+  copy:
+    src: kubelet-config.yaml
+    dest: /etc/kubernetes/kubelet-config.yaml
+
+- name: 生成kubelet服务
+  template:
+    src: kubelet.service
+    dest: /usr/lib/systemd/system/kubelet.service
+
+- name: 生成kube-proxy配置
+  template:
+    src:  kube-proxy.config.yaml
+    dest: /etc/kubernetes/kube-proxy.config.yaml
+
+- name: 生成kube-proxy服务
+  copy:
+    src: kube-proxy.service
+    dest: /usr/lib/systemd/system/kube-proxy.service
+
+- name: 启动kubelet
+  systemd:
+    name: kubelet
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: 启动kube-proxy
+  systemd:
+    name: kube-proxy
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: 生成iptables.sh
+  copy:
+    src: iptables.sh
+    dest: /etc/kubernetes/iptables.sh
+    mode: 755
+
+- name: 执行iptables脚本
+  shell: |
+    sh /etc/kubernetes/iptables.sh
+    echo "sh /etc/kubernetes/ipstables.sh" >> /etc/rc.local
+
+
+
+

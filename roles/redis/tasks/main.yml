@@ -1,0 +1,44 @@
+- name: download package
+  shell: cd /tmp/;wget 10.30.0.50:8080/redis-4.0.11.tar.gz && tar -zxvf redis-4.0.11.tar.gz
+
+- name: compile
+  shell: cd /tmp/redis-4.0.11 && make && make install
+
+- name: create dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - /data/redis/conf
+    - /data/redis/db
+    - /data/logs/redis
+
+- name: copy conf
+  template:
+    src: "{{ item }}"
+    dest: /data/redis/conf/
+  with_items:
+    - redis.conf
+    - sentinel.conf
+
+- name: configure service
+  copy:
+    src: redis.service
+    dest: /usr/lib/systemd/system/redis.service
+
+- name: modify core
+  shell: echo "net.core.somaxconn= 1024" >> /etc/sysctl.conf && sysctl -p
+
+- name: start redis
+  systemd:
+    name: redis
+    state: started
+    enabled: yes
+
+- name: start sentinel
+  systemd:
+    name: redis-sentinel
+    state: started
+    enabled: yes
+

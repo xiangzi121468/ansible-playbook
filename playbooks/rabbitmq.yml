@@ -1,0 +1,5 @@
+- hosts: rabbitmq
+
+  serial: 5
+  roles:
+    - rabbitmq

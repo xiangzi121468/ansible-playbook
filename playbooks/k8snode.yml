@@ -1,0 +1,5 @@
+- hosts: k8snode
+
+  serial: 1
+  roles:
+    - k8snode

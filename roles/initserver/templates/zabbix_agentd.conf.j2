@@ -1,0 +1,41 @@
+PidFile=/tmp/zabbix_agentd.pid
+# LogType=file
+LogFile=/data/logs/zabbix/zabbix_agentd.log
+# LogFileSize=1
+
+# DebugLevel=3
+# SourceIP=
+EnableRemoteCommands=1
+# LogRemoteCommands=0
+
+Server=10.30.0.30
+ListenPort=10050
+ListenIP=0.0.0.0
+
+# StartAgents=3
+
+ServerActive=10.30.0.30
+
+Hostname={{ inventory_hostname }}
+# RefreshActiveChecks=120
+# BufferSend=5
+# BufferSize=100
+# MaxLinesPerSecond=20
+# Timeout=3
+# AllowRoot=1
+# User=zabbix
+Include=/usr/local/zabbix/etc/zabbix_agentd.conf.d/*.conf
+UnsafeUserParameters=1
+# UserParameter=
+# LoadModulePath=${libdir}/modules
+# LoadModule=
+# TLSConnect=unencrypted
+# TLSAccept=unencrypted
+# TLSCAFile=
+# TLSCRLFile=
+# TLSServerCertIssuer=
+# TLSServerCertSubject=
+# TLSCertFile=
+# TLSKeyFile=
+# TLSPSKIdentity=
+# TLSPSKFile=

@@ -1,17 +1,17 @@
-- name: 执行解压以及安装
-  unarchive: src=/opt/elk/elasticsearch-6.2.4.tar.gz    dest=/usr/local
-- name: 重命名
-  shell: mv /usr/local/elasticsearch-6.2.4    /usr/local/elasticsearch
-- name: 创建用户组并授权
-  ignore_errors: yes
-  shell: useradd elasticsearch && chown -R elasticsearch:elasticsearch /usr/local/elasticsearch
+- name: 下载es解压并重命名 
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/elk/es/elasticsearch-6.2.4.tar.gz
+    tar zxvf elasticsearch-6.2.4.tar.gz
+    mv elasticsearch-6.2.4    /usr/local/elasticsearch
+    rm -rf elasticsearch-6.2.4.tar.gz
+    useradd elasticsearch
+    chown -R elasticsearch:elasticsearch /usr/local/elasticsearch
 
-- name: 上传elasticsearch.service
-  ignore_errors: yes
-  copy: 
-    src: /opt/elk/elasticsearch.service
-    dest: /usr/lib/systemd/system/
-    #force: yes
+- name: 下载elasticsearch.service
+  copy:
+    src: elasticsearch.service
+    dest:  /usr/lib/systemd/system/elasticsearch.service
 - name: 写入system服务
   shell: systemctl daemon-reload 
 

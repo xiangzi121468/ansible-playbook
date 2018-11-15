@@ -1,0 +1,11 @@
+- name: 更新filebeat配置
+templates:
+  src: filebeat.yml
+  dest: /usr/local/filebeat/filebeat.yml
+
+
+- name: 重启filebeat服务
+  systemd:
+    state: restarted
+    name: filebeat
+

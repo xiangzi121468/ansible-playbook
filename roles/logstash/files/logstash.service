@@ -1,0 +1,12 @@
+[Unit]
+Description=logstash
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/logstash/bin/logstash  -f /usr/local/logstash/config/conf.d 
+ExecStop=kill -9  ` ps -ef |grep logstash |grep -v grep|awk '{print $2}'  `
+#Restart=always
+
+[Install]
+WantedBy=multi-user.target

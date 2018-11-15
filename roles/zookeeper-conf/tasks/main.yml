@@ -1,0 +1,11 @@
+- name: 更新zookeeper配置
+  templates:
+    src: zoo.cfg
+    dest: /usr/local/zookeeper/conf/zoo.cfg
+
+
+- name: 重启zookeeper服务
+  systemd:
+    state: restarted
+    name: zookeeper
+

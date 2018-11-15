@@ -1,0 +1,33 @@
+- name: 创建证书目录
+  file:
+    path: /data/etcd/ssl
+    state: directory
+    recurse: yes
+
+- name: 安装证书
+  copy:
+    src: "{{ item }}"
+    dest: /data/etcd/ssl
+  with_items:
+    - /usr/local/ssl/ca.pem
+    - /usr/local/ssl/kubernetes-key.pem
+    - /usr/local/ssl/kubernetes.pem
+
+- name: 安装etcd
+  shell: |
+    cd /tmp/
+    wget http://10.30.0.50:8080/etcd.tar.gz
+    tar -zxvf etcd.tar.gz
+    mv ./etcd/* /usr/bin/
+    chmod +x /usr/bin/etcd*
+
+- name: 生成服务配置
+  template:
+    src: etcd.service
+    dest: /usr/lib/systemd/system/etcd.service
+
+- name: 启动服务
+  systemd:
+    name: etcd
+    state: started
+    enabled: yes

@@ -1,0 +1,11 @@
+[Unit]
+Description=Redis
+
+[Service]
+User=root
+Type=forking
+ExecStart=/usr/local/bin/redis-sentinel   /data/redis/conf/sentinel.conf
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

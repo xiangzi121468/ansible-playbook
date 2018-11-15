@@ -1,0 +1,5 @@
+- hosts: dns
+
+  serial: 5
+  roles:
+    - dns
