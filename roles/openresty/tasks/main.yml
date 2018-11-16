@@ -1,5 +1,5 @@
 - name: download package
-  shell: cd /tmp/;wget 10.30.0.50:8080/openresty-1.13.6.2.tar.gz&&tar -zxvf openresty-1.13.6.2.tar.gz
+  shell: cd /tmp/;wget 47.105.80.198:8080/openresty-1.13.6.2.tar.gz&&tar -zxvf openresty-1.13.6.2.tar.gz
 
 - name: install lib
   yum:

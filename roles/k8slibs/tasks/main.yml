@@ -1,7 +1,7 @@
 - name: 下载证书工具
   shell: |
     cd /tmp/
-    wget http://10.30.0.50:8080/cfssl.tar.gz
+    wget http://47.105.80.198:8080/cfssl.tar.gz
     tar -zxvf cfssl.tar.gz
     cd cfssl
     mv cfssl* /usr/bin/
@@ -40,7 +40,7 @@
 - name: 安装kubectl
   shell: |
     cd /tmp/
-    wget http://10.30.0.50:8080/kubernetes/kubectl
+    wget http://47.105.80.198:8080/kubernetes/kubectl
     mv kubectl /usr/bin/kubectl
     chmod +x /usr/bin/kubectl
 

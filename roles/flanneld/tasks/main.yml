@@ -1,8 +1,8 @@
 - name: 安装程序
   shell: |
     cd /tmp/
-    wget http://10.30.0.50:8080/flanneld/flanneld
-    wget http://10.30.0.50:8080/flanneld/mk-docker-opts.sh
+    wget http://47.105.80.198:8080/flanneld/flanneld
+    wget http://47.105.80.198:8080/flanneld/mk-docker-opts.sh
     mv flanneld /usr/bin/flanneld
     mv mk-docker-opts.sh /etc/kubernetes/
     chmod +x /usr/bin/flanneld
@@ -11,7 +11,7 @@
 - name: ansible 安装 etcdctl
   shell: |
     cd /tmp/
-    wget http://10.30.0.50:8080/etcd/etcdctl
+    wget http://47.105.80.198:8080/etcd/etcdctl
     mv etcdctl /usr/bin/etcdctl
     chmod +x /usr/bin/etcdctl
   connection: local

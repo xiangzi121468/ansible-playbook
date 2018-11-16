@@ -49,7 +49,7 @@ nginx1  ansible_ssh_host=10.30.0.90 ansible_ssh_port=50099 ansible_ssh_user=root
 nginx2  ansible_ssh_host=10.30.0.91 ansible_ssh_port=50099 ansible_ssh_user=root
 
 [harbor]
-harbor1  ansible_ssh_host=10.30.0.50 ansible_ssh_port=50099 ansible_ssh_user=root
+harbor1  ansible_ssh_host=47.105.80.198 ansible_ssh_port=50099 ansible_ssh_user=root
 harbor2  ansible_ssh_host=10.30.0.51 ansible_ssh_port=50099 ansible_ssh_user=root
 
 [jumpserver]

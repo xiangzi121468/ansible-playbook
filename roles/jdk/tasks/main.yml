@@ -1,5 +1,5 @@
 - name : 下载文件并解压
-  shell: cd /tmp/ && wget http://10.30.0.50:8080/elk/jdk/jdk-8u181-linux-x64.tar.gz  && tar zxvf jdk-8u181-linux-x64.tar.gz && mv jdk1.8.0_181   /usr/local  && rm -rf jdk-8u181-linux-x64.tar.gz
+  shell: cd /tmp/ && wget http://47.105.80.198:8080/elk/jdk/jdk-8u181-linux-x64.tar.gz  && tar zxvf jdk-8u181-linux-x64.tar.gz && mv jdk1.8.0_181   /usr/local  && rm -rf jdk-8u181-linux-x64.tar.gz
 - name: 执行环境变量使其生效
   shell:  |
      echo "export JAVA_HOME=/usr/local/jdk1.8.0_181"  >> /etc/profile

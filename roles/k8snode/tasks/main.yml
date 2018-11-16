@@ -85,8 +85,8 @@
 - name: 安装kubelet & kube-proxy
   shell: |
     cd /tmp/
-    wget http://10.30.0.50:8080/kubernetes/kubelet
-    wget http://10.30.0.50:8080/kubernetes/kube-proxy
+    wget http://47.105.80.198:8080/kubernetes/kubelet
+    wget http://47.105.80.198:8080/kubernetes/kube-proxy
     mv ./kube* /usr/bin/
     chmod +x /usr/bin/kube*
 
